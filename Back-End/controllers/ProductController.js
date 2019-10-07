@@ -15,7 +15,7 @@ function saveProduct(req, res){
             product.description = params.description;
             product.stock = params.stock;
             product.category = params.category;
-            product.price = 'Q. ' + params.price;
+            product.price = parseInt(Math.round(params.price * 100)/100).toFixed(2);
             product.sold = 0;
     
             Product.findOne({name: product.name}, (err, isSetProduct) => {
@@ -35,7 +35,7 @@ function saveProduct(req, res){
                             }
                         });
                     }else{
-                        res.status(200).send({message: 'No se ha podido registrar el usuario'});
+                        res.status(200).send({message: 'No se ha podido registrar el producto'});
                     }
                 }
             });      
@@ -45,6 +45,69 @@ function saveProduct(req, res){
     }   
 }
 
+function updateProduct(req, res){
+    var productID = req.params.id;
+    var updated = req.body;
+
+    if(updated.price){
+        updated.price = parseInt(Math.round(updated.price * 100)/100).toFixed(2);
+
+        Product.findByIdAndUpdate(productID, updated, {new: true}, (err, productUpdated) => {
+            if(err){
+                res.status(200).send({message: 'Error al actualizar el producto'});
+            }else{
+                if(!productUpdated){
+                    res.status(200).send({message: 'No se ha podido actualizar el producto'});
+                }else{
+                    res.status(200).send({product: productUpdated});
+                }
+            }
+        });
+    }else{
+        Product.findByIdAndUpdate(productID, updated, {new: true}, (err, productUpdated) => {
+            if(err){
+                res.status(200).send({message: 'Error al actualizar el producto'});
+            }else{
+                if(!productUpdated){
+                    res.status(200).send({message: 'No se ha podido actualizar el producto'});
+                }else{
+                    res.status(200).send({product: productUpdated});
+                }
+            }
+        });
+    }
+}
+
+function deleteProduct(req, res){
+    var productID = req.params.id;
+    var deleted = req.body;
+
+    Product.findByIdAndRemove(productID, deleted, (err, productDeleted) => {
+        if(err){
+            res.status(200).send({message: 'Error al eliminar el producto'});
+        }else{
+            if(!productDeleted){
+                res.status(200).send({message: 'No se ha podido eliminar el prodicto'});
+            }else{
+                res.status(200).send({message: '¡El producto: ' + productDeleted.name + ' fue eliminado satisfactoriamente!'})
+            }
+        }
+    });
+}
+
+function listProducts(req, res){
+    Product.find({}, (err, products) => {
+        if(err){
+            res.status(200).send(err);
+        }else{
+            res.status(200).send({products: products});
+        }
+    });
+}
+
 module.exports = {
-    saveProduct
+    saveProduct,
+    updateProduct,
+    deleteProduct,
+    listProducts
 }
