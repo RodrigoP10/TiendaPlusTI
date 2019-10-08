@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var SchemaTypes = mongoose.Schema.Types;
 
 var ProductSchema = Schema({
+    productCode: String,
     name: String,
     description: String,
     stock: Number,
