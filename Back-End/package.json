@@ -19,7 +19,7 @@
     "js": "^0.1.0",
     "jwt-simple": "^0.5.6",
     "moment": "^2.24.0",
-    "mongoose": "^5.6.10",
+    "mongoose": "^5.7.5",
     "mongoose-double": "0.0.1"
   },
   "devDependencies": {
