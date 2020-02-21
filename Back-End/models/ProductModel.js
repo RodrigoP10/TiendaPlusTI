@@ -1,9 +1,7 @@
 'use strict'
 
-var mongoose = require('mongoose')
-require('mongoose-double')(mongoose);
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var SchemaTypes = mongoose.Schema.Types;
 
 var ProductSchema = Schema({
     productCode: String,
@@ -11,8 +9,8 @@ var ProductSchema = Schema({
     description: String,
     stock: Number,
     category: String,
-    price: {type: SchemaTypes.Decimal128},
+    price: Number,
     sold: Number
 });
 
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = mongoose.model('Product', ProductSchema);
