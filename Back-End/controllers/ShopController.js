@@ -44,39 +44,38 @@ function saveShop(req, res) {
                                                 var bill = new Bill();
 
                                                 Bill.findOne({ buyer: buyer }, (err, buyerFound) => {
-                                                    if(buyerFound){
+                                                    if (buyerFound) {
                                                         buyerFound.products.push("Código del Producto: " + productFound.productCode + " - " + "Nombre del Producto: " + productFound.name);
                                                         buyerFound.total += shop.subTotal;
 
-                                                        buyerFound.save((err, billUpdated) =>{
-                                                            if(err){
+                                                        buyerFound.save((err, billUpdated) => {
+                                                            if (err) {
                                                                 res.status(200).send({ message: 'Error al guardar la factura' });
-                                                            }else{
-                                                                if(!billUpdated){
+                                                            } else {
+                                                                if (!billUpdated) {
                                                                     res.status(200).send({ message: 'No se ha podido registrar la factura' });
-                                                                }else{
+                                                                } else {
                                                                     res.status(200).send({ shop: shopStored, productUpdated: productUpdated, billUpdated: billUpdated });
                                                                 }
-                                                            }                                                            
+                                                            }
                                                         });
-                                                    }else{
-                                                        User.findOne({ _id: params.buyer} , (err, userFound) =>{
-
+                                                    } else {
+                                                        User.findOne({ _id: params.buyer }, (err, userFound) => {
                                                             bill.buyer = buyer;
                                                             bill.user = "Usuario: " + userFound.user + " - Nombre: " + userFound.name + " " + userFound.surname;
                                                             bill.products = "Código del Producto: " + productFound.productCode + " - " + "Nombre del Producto: " + productFound.name;
                                                             bill.total = shop.subTotal;
-    
-                                                            bill.save((err, billSaved) =>{
-                                                                if(err){
-                                                                    res.status(200).send({ message: 'Error al guardar la factura' } + err);
-                                                                }else{
-                                                                    if(!billSaved){
+
+                                                            bill.save((err, billSaved) => {
+                                                                if (err) {
+                                                                    res.status(200).send({ message: 'Error al guardar la factura', err: err });
+                                                                } else {
+                                                                    if (!billSaved) {
                                                                         res.status(200).send({ message: 'No se ha podido registrar la factura' });
-                                                                    }else{
+                                                                    } else {
                                                                         res.status(200).send({ shop: shopStored, productUpdated: productUpdated, bill: billSaved });
                                                                     }
-                                                                }                                                            
+                                                                }
                                                             });
                                                         });
                                                     }
